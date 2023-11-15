@@ -12,7 +12,6 @@ import java.util.List;
 @Getter
 @Setter
 @Inheritance
-@NoArgsConstructor
 @AllArgsConstructor
 @EnableR2dbcAuditing
 @RequiredArgsConstructor
