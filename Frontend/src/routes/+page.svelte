@@ -1,14 +1,14 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { login } from '$lib/client';
 
 
 	let username:string, password:string;
 
 	async function loginForm() {
-		var result = true;
+		var result = login(username, password);
 
 		if (result) {
-            localStorage.setItem("username",username)
 			goto('dash');
 		} else {
 			console.error('Login failed!');

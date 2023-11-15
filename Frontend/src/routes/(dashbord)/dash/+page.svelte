@@ -5,29 +5,16 @@
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import { AppBar } from '@skeletonlabs/skeleton';
 	import { AppShell } from '@skeletonlabs/skeleton';
-	let username: string, password: string;
 
 	onMount(async () => {
-		username = localStorage.getItem('username') ?? 'Loading...';
+		username = localStorage.getItem('name') ?? 'Loading...';
 	});
-
-	async function loginForm() {
-		var result = false;
-
-		if (result) {
-			localStorage.goto('dash');
-		} else {
-			console.error('Login failed!');
-		}
-	}
 </script>
-<body class="body">
 <AppShell>
 	<svelte:fragment slot="pageHeader">Page Header</svelte:fragment>
 	<slot/>
 	<svelte:fragment slot ="pageFooter">FOOTER</svelte:fragment>
 </AppShell>
-</body>
 
 <style>
 	
