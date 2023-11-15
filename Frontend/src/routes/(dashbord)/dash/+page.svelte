@@ -5,11 +5,13 @@
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import { AppBar } from '@skeletonlabs/skeleton';
 	import { AppShell } from '@skeletonlabs/skeleton';
+	let username:string;
 
 	onMount(async () => {
 		username = localStorage.getItem('name') ?? 'Loading...';
 	});
 </script>
+
 <AppShell>
 	<svelte:fragment slot="pageHeader">Page Header</svelte:fragment>
 	<slot/>
