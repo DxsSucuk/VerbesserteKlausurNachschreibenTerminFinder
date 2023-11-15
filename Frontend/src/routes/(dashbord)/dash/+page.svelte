@@ -23,9 +23,9 @@
 </script>
 <body class="body">
 <AppShell>
-	<svelte:fragment slot="header">HEADER</svelte:fragment>
+	<svelte:fragment slot="pageHeader">Page Header</svelte:fragment>
 	<slot/>
-	<svelte:fragment slot ="footer">FOOTER</svelte:fragment>
+	<svelte:fragment slot ="pageFooter">FOOTER</svelte:fragment>
 </AppShell>
 </body>
 
