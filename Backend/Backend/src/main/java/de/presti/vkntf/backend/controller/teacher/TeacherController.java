@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -30,7 +31,7 @@ public class TeacherController {
             }
 
             return Mono.just(new GenericObjectResponse<List<Classroom>>(true, x, "Classrooms found"));
-        }).switchIfEmpty(Mono.just(new GenericObjectResponse<List<Classroom>>(false, List.of(), "No classrooms found")));
+        }).switchIfEmpty(Mono.just(new GenericObjectResponse<List<Classroom>>(false, Collections.emptyList(), "No classrooms found")));
     }
 
 }

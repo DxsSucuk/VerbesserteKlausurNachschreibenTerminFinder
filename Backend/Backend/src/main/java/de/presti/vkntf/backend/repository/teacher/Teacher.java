@@ -17,5 +17,4 @@ import java.util.List;
 @RequiredArgsConstructor
 public class Teacher extends UserBase {
     int abteilung;
-    List<String> classes;
 }

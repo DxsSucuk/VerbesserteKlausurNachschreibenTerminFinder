@@ -28,7 +28,7 @@ public class ClassroomController {
     public Mono<GenericObjectResponse<List<Student>>> getStudents(@PathVariable("id") String classroomId, @RequestHeader(name = "Authorization") String sessionToken) {
         return classroomService.getStudents(classroomId, sessionToken).flatMap(x -> {
             if (x.isEmpty()) {
-                return Mono.just(new GenericObjectResponse<List<Student>>(false, Collections.emptyList(), "No students found"));
+                return Mono.just(new GenericObjectResponse<List<Student>>(false, x, "No students found"));
             }
 
             return Mono.just(new GenericObjectResponse<List<Student>>(true, x, "Students found"));
