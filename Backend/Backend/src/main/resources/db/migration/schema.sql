@@ -6,6 +6,7 @@ CREATE TABLE appointment
     teacher_id          VARCHAR(255) NULL,
     student_id          VARCHAR(255) NULL,
     classroom_id        VARCHAR(255) NULL,
+    date                datetime NULL,
     CONSTRAINT pk_appointment PRIMARY KEY (appointment_id)
 );
 
