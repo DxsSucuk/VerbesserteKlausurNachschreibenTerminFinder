@@ -1,4 +1,4 @@
-package de.presti.vkntf.backend.repository.classroom;
+package de.presti.vkntf.backend.repository.notice;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
@@ -6,8 +6,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
+
+import java.sql.Timestamp;
 
 @Table
 @Getter
@@ -17,21 +20,23 @@ import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 @AllArgsConstructor
 @EnableR2dbcAuditing
 @RequiredArgsConstructor
-public class Classroom implements Persistable<String> {
+public class Notice implements Persistable<Long> {
 
     @Id
-    @NonNull
-    String name;
-
-    int abteilung;
+    long Id;
+    long examId;
 
     @NonNull
-    @JsonIgnore
-    String classTeacher;
+    String studentId;
+
+    String approvedByTeacherId;
+
+    @CreationTimestamp
+    Timestamp createdAt;
 
     @Override
-    public String getId() {
-        return name;
+    public Long getId() {
+        return Id;
     }
 
     @Transient
@@ -42,4 +47,5 @@ public class Classroom implements Persistable<String> {
     public boolean isNew() {
         return isNew;
     }
+
 }

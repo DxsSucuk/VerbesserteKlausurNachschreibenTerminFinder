@@ -1,5 +1,6 @@
 package de.presti.vkntf.backend.repository.teacher;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -10,6 +11,7 @@ import org.springframework.data.relational.core.mapping.Table;
 @Table
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @EnableR2dbcAuditing

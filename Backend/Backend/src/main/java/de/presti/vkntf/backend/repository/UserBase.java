@@ -3,6 +3,7 @@ package de.presti.vkntf.backend.repository;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Transient;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 
@@ -36,6 +37,7 @@ public class UserBase implements Persistable<String> {
         return id;
     }
 
+    @Transient
     @JsonIgnore
     boolean isNew = true;
 

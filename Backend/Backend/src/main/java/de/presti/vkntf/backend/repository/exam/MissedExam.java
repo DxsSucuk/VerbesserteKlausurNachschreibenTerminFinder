@@ -1,4 +1,4 @@
-package de.presti.vkntf.backend.repository.classroom;
+package de.presti.vkntf.backend.repository.exam;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
@@ -9,6 +9,8 @@ import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 
+import java.sql.Timestamp;
+
 @Table
 @Getter
 @Setter
@@ -17,21 +19,29 @@ import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 @AllArgsConstructor
 @EnableR2dbcAuditing
 @RequiredArgsConstructor
-public class Classroom implements Persistable<String> {
+public class MissedExam implements Persistable<Long> {
 
     @Id
-    @NonNull
-    String name;
-
-    int abteilung;
+    Long id;
 
     @NonNull
-    @JsonIgnore
-    String classTeacher;
+    String studentId;
+
+    @NonNull
+    String teacherId;
+
+    @NonNull
+    String classromId;
+
+    @Transient
+    public boolean hasNotice;
+
+    @NonNull
+    Timestamp missedAt;
 
     @Override
-    public String getId() {
-        return name;
+    public @NonNull Long getId() {
+        return id;
     }
 
     @Transient

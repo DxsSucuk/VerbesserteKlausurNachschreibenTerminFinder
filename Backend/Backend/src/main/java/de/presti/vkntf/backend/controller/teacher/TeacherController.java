@@ -1,6 +1,7 @@
 package de.presti.vkntf.backend.controller.teacher;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
+import de.presti.vkntf.backend.repository.appointment.Appointment;
 import de.presti.vkntf.backend.repository.classroom.Classroom;
 import de.presti.vkntf.backend.service.TeacherService;
 import org.springframework.http.MediaType;
@@ -23,9 +24,9 @@ public class TeacherController {
     }
 
     @RequestMapping(value = "/classrooms")
-    public Mono<GenericObjectResponse<List<Classroom>>> getClasses(@RequestHeader(name = "Authorization") String sessionToke) {
+    public Mono<GenericObjectResponse<List<Classroom>>> getClasses(@RequestHeader(name = "Authorization") String sessionToken) {
 
-        return teacherService.getClasses(sessionToke).flatMap(x -> {
+        return teacherService.getClasses(sessionToken).flatMap(x -> {
             if (x.isEmpty()) {
                 return Mono.just(new GenericObjectResponse<List<Classroom>>(false, x, "No classrooms found"));
             }
@@ -33,5 +34,4 @@ public class TeacherController {
             return Mono.just(new GenericObjectResponse<List<Classroom>>(true, x, "Classrooms found"));
         }).switchIfEmpty(Mono.just(new GenericObjectResponse<List<Classroom>>(false, Collections.emptyList(), "No classrooms found")));
     }
-
 }

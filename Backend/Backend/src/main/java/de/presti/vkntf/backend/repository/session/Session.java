@@ -3,10 +3,12 @@ package de.presti.vkntf.backend.repository.session;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.presti.vkntf.backend.repository.student.Student;
 import de.presti.vkntf.backend.repository.teacher.Teacher;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 import org.springframework.data.relational.core.mapping.Table;
@@ -16,6 +18,7 @@ import java.sql.Timestamp;
 @Table
 @Getter
 @Setter
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @EnableR2dbcAuditing
@@ -48,6 +51,7 @@ public class Session implements Persistable<String> {
         return sessionToken;
     }
 
+    @Transient
     @JsonIgnore
     boolean isNew = true;
 

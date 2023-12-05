@@ -1,6 +1,7 @@
 package de.presti.vkntf.backend.repository.teacher;
 
 import de.presti.vkntf.backend.repository.UserBase;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Inheritance;
 import lombok.*;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
@@ -11,6 +12,7 @@ import java.util.List;
 @Table
 @Getter
 @Setter
+@Entity
 @Inheritance
 @AllArgsConstructor
 @EnableR2dbcAuditing
