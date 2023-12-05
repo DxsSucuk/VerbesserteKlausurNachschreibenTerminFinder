@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface MissedExamRepository extends R2dbcRepository<MissedExam, Long> {
 
-    Mono<MissedExam> getMissedExamBy(@Param("id") String id);
+    Mono<MissedExam> getMissedExamBy(@Param("id") long id);
     Flux<MissedExam> getMissedExamsByStudentId(@Param("studentId") String studentId);
     Flux<MissedExam> getMissedExamsByTeacherId(@Param("teacherId") String teacherId);
     Flux<MissedExam> getMissedExamsByClassromId(@Param("classromId") String classromId);

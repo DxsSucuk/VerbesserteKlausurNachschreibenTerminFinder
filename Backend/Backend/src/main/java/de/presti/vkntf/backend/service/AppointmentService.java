@@ -84,7 +84,7 @@ public class AppointmentService {
     public Mono<GenericResponse> createAppointment(String sessionToken, AppointmentCreateRequest request) {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
            if (session.getT1()) {
-               if (session.getT2().getTeacher().isBlank()) {
+               if (!session.getT2().getTeacher().isBlank()) {
                    Appointment appointment = new Appointment(session.getT2().getTeacher(), "", request.classromId(), request.date());
                    return Flux.fromStream(request.students().stream()).flatMap(x -> {
                        appointment.setStudentId(x);
