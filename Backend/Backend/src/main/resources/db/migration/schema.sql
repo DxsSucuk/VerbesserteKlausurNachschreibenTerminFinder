@@ -75,6 +75,5 @@ CREATE TABLE teacher_classroom_map
     id           BIGINT NOT NULL,
     teacher_id   VARCHAR(255) NULL,
     classroom_id VARCHAR(255) NULL,
-    is_new       BIT(1) NOT NULL,
     CONSTRAINT pk_teacherclassroommap PRIMARY KEY (id)
 );

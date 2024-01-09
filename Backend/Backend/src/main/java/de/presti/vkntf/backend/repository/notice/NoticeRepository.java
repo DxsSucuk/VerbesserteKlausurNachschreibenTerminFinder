@@ -15,4 +15,5 @@ public interface NoticeRepository extends R2dbcRepository<Notice, Long> {
     Flux<Notice> getNoticesByApprovedByTeacherId(@Param("approvedByTeacherId") String approvedByTeacherId);
     Flux<Notice> getNoticesByStudentIdAndApprovedByTeacherId(@Param("studentId") String studentId, @Param("approvedByTeacherId") String approvedByTeacherId);
     Mono<Notice> getNoticeByExamIdAndStudentId(@Param("examId") long examId, @Param("studentId") String studentId);
+    Mono<Notice> getNoticeByExamIdAndStudentIdAndApprovedByTeacherIdTrue(@Param("examId") long examId, @Param("studentId") String studentId);
 }

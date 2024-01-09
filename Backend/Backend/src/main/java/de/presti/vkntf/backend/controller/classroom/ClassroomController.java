@@ -23,7 +23,6 @@ public class ClassroomController {
         this.classroomService = classroomService;
     }
 
-
     @RequestMapping(value = "/students")
     public Mono<GenericObjectResponse<List<Student>>> getStudents(@PathVariable("id") String classroomId, @RequestHeader(name = "Authorization") String sessionToken) {
         return classroomService.getStudents(classroomId, sessionToken).flatMap(x -> {
