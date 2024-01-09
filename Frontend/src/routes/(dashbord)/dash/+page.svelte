@@ -2,6 +2,7 @@
     import { Table } from '@skeletonlabs/skeleton';
     import { tableMapperValues } from '@skeletonlabs/skeleton';
     import type { TableSource } from '@skeletonlabs/skeleton';
+    let visible: boolean = true;
 
     const sourceData = [
         { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
@@ -24,5 +25,24 @@
     };
 
 </script>
+<label>
+	<input type="checkbox" bind:checked={visible} />
+	visible
+</label>
+
+{#if visible}
+    <aside class="alert variant-filled-error">
+        <!-- Icon -->
+        <div>(icon)</div>
+        <!-- Message -->
+        <div class="alert-message">
+            <h3 class="h3">(title)</h3>
+            <p>message</p>
+        </div>
+        <!-- Actions -->
+        <div class="alert-actions">(buttons)</div>
+    </aside>
+{/if}
+            
 
 <Table source={tableSimple} />
