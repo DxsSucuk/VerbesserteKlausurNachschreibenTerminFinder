@@ -1,12 +1,7 @@
 package de.presti.vkntf.backend.controller.notice;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
-import de.presti.vkntf.backend.api.GenericResponse;
-import de.presti.vkntf.backend.api.request.ExamCreateRequest;
 import de.presti.vkntf.backend.api.request.GenericValueRequest;
-import de.presti.vkntf.backend.repository.exam.MissedExam;
-import de.presti.vkntf.backend.repository.notice.Notice;
-import de.presti.vkntf.backend.service.ExamService;
 import de.presti.vkntf.backend.service.NoticeService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestBody;
