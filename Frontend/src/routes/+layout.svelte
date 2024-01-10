@@ -8,6 +8,21 @@
 	import type { Writable } from 'svelte/store'; // Handles our data
 	import type { Settings } from '$lib/client';
 
+	import { initializeStores } from '@skeletonlabs/skeleton';
+	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
+	import type { ToastSettings, ToastStore } from '@skeletonlabs/skeleton';
+
+initializeStores();
+const toastStore = getToastStore();
+
+const t: ToastSettings = {
+	message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
+	autohide:false
+};
+toastStore.trigger(t);
+
+
+
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
@@ -47,7 +62,7 @@
 		profilePicture = getSetting('profile').value;
 	});
 </script>
-
+<Toast />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">

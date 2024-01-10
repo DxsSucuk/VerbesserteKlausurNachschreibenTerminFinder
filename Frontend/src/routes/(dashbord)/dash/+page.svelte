@@ -12,7 +12,6 @@
         { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
     ];
 
-
     const tableSimple: TableSource = {
         // A list of heading labels.
         head: ['Lernfeld', 'Datum', 'Anzahl'],
@@ -25,24 +24,5 @@
     };
 
 </script>
-<label>
-	<input type="checkbox" bind:checked={visible} />
-	visible
-</label>
-
-{#if visible}
-    <aside class="alert variant-filled-error">
-        <!-- Icon -->
-        <div>(icon)</div>
-        <!-- Message -->
-        <div class="alert-message">
-            <h3 class="h3">(title)</h3>
-            <p>message</p>
-        </div>
-        <!-- Actions -->
-        <div class="alert-actions">(buttons)</div>
-    </aside>
-{/if}
-            
 
 <Table source={tableSimple} />
