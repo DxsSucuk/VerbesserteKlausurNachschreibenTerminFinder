@@ -12,7 +12,8 @@
         { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
     ];
 
-    const tableSimple: TableSource = {
+    function setTableSource(): TableSource  {
+        return{
         // A list of heading labels.
         head: ['Lernfeld', 'Datum', 'Anzahl'],
         // The data visibly shown in your table body UI.
@@ -20,9 +21,9 @@
         // Optional: The data returned when interactive is enabled and a row is clicked.
         meta: tableMapperValues(sourceData, ['position', 'name', 'symbol', 'weight']),
         // Optional: A list of footer labels.
-        foot: ['Total', '', '<code class="code">5</code>']
-    };
-
+        foot: ['Total', '', '<code class="code">5</code>']};
+    }
+    $: tableSimple = sourceData ? setTableSource() : undefined;
 </script>
 
-<Table source={tableSimple} />
+<Table source={tableSimple} interactive={true} on:selected={mySelectionHandler} />

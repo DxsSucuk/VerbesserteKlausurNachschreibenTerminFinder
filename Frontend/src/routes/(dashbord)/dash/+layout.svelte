@@ -8,6 +8,10 @@
 	import type { Writable } from 'svelte/store'; // Handles our data
 	import type { Settings } from '$lib/client';
 
+	import { TableOfContents, tocCrawler } from '@skeletonlabs/skeleton';
+
+
+
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
 	import type { ToastSettings, ToastStore } from '@skeletonlabs/skeleton';
@@ -75,7 +79,14 @@ toastStore.trigger(t);
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
-	<svelte:fragment slot="sidebarLeft">Sidebar Left</svelte:fragment>
+	<svelte:fragment slot="sidebarLeft">
+		<div use:tocCrawler={{ mode: 'generate' }}>
+			<h2>Heading 2</h2>
+			<p>test</p>
+			<h3>Heading 3</h3>
+			<p>test</p>
+		</div>
+						</svelte:fragment>
 	<slot />
 	<svelte:fragment slot="footer">Datum</svelte:fragment>
 </AppShell>
