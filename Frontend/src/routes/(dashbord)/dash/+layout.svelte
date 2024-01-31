@@ -10,8 +10,6 @@
 
 	import { TableOfContents, tocCrawler } from '@skeletonlabs/skeleton';
 
-
-
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
 	import type { ToastSettings, ToastStore } from '@skeletonlabs/skeleton';
@@ -28,6 +26,8 @@ toastStore.trigger(t);
 
 
 	// Floating UI for Popups
+	import { popup } from '@skeletonlabs/skeleton';
+	import type { PopupSettings } from '@skeletonlabs/skeleton';
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { onMount } from 'svelte';
@@ -65,12 +65,21 @@ toastStore.trigger(t);
 		}
 		profilePicture = getSetting('profile').value;
 	});
+
+	const popupClick: PopupSettings = {
+	event: 'click',
+	target: 'popupClick',
+	placement: 'top'
+};
+					
+
+
 </script>
 <Toast />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
-			<svelte:fragment slot="lead"><Avatar src={icon} /></svelte:fragment>
+			<svelte:fragment slot="lead" ><Avatar src={icon}/></svelte:fragment>
 			VerbesserteKlausurNachreibenTerminFinder
 			<svelte:fragment slot="trail">
 				{#if profilePicture}
@@ -90,3 +99,6 @@ toastStore.trigger(t);
 	<slot />
 	<svelte:fragment slot="footer">Datum</svelte:fragment>
 </AppShell>
+
+
+					

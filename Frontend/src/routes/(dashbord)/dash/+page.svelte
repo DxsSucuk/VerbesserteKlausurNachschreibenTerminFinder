@@ -2,6 +2,8 @@
     import { Table } from '@skeletonlabs/skeleton';
     import { tableMapperValues } from '@skeletonlabs/skeleton';
     import type { TableSource } from '@skeletonlabs/skeleton';
+
+
     let visible: boolean = true;
 
     const sourceData = [
@@ -21,9 +23,12 @@
         // Optional: The data returned when interactive is enabled and a row is clicked.
         meta: tableMapperValues(sourceData, ['position', 'name', 'symbol', 'weight']),
         // Optional: A list of footer labels.
-        foot: ['Total', '', '<code class="code">5</code>']};
+        foot: ['Total', '', '<code class="code">5</code>']
+        };
     }
     $: tableSimple = sourceData ? setTableSource() : undefined;
 </script>
 
-<Table source={tableSimple} interactive={true} on:selected={mySelectionHandler} />
+{#if tableSimple != undefined}
+<Table source={tableSimple} interactive={true} />
+{/if}
