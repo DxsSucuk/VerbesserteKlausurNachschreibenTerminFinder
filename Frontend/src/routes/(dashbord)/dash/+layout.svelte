@@ -14,16 +14,14 @@
 	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
 	import type { ToastSettings, ToastStore } from '@skeletonlabs/skeleton';
 
-initializeStores();
-const toastStore = getToastStore();
+	initializeStores();
+	const toastStore = getToastStore();
 
-const t: ToastSettings = {
-	message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
-	autohide:false
-};
-toastStore.trigger(t);
-
-
+	const t: ToastSettings = {
+		message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
+		autohide: false
+	};
+	toastStore.trigger(t);
 
 	// Floating UI for Popups
 	import { popup } from '@skeletonlabs/skeleton';
@@ -52,6 +50,7 @@ toastStore.trigger(t);
 		'https://cdn.discordapp.com/attachments/1173914026066071602/1194236332067786802/full-length-portrait-busy-businessperson-running-late-wall-clock-briefcase-isolated-white-background-32275306.jpg?ex=65af9e41&is=659d2941&hm=f5a81517489a2dfa5e719e8509ec7dfc438469bc3add83d0c32b0ad80463572c&';
 
 	let profilePicture: string | undefined;
+	let username: string | undefined;
 
 	onMount(() => {
 		if (!getSetting('profile')) {
@@ -63,27 +62,38 @@ toastStore.trigger(t);
 
 			saveSetting(setting);
 		}
+
+		if (!getSetting('username')) {
+			let setting = {
+				name: 'username',
+				value:
+					'ILoveBoobies'
+			};
+
+			saveSetting(setting);
+		}
 		profilePicture = getSetting('profile').value;
+		username = getSetting('username').value;
 	});
 
 	const popupClick: PopupSettings = {
-	event: 'click',
-	target: 'popupClick',
-	placement: 'top'
-};
-					
-
-
+		event: 'click',
+		target: 'popupFeatured',
+		placement: 'bottom'
+	};
 </script>
+
 <Toast />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
-			<svelte:fragment slot="lead" ><Avatar src={icon}/></svelte:fragment>
+			<svelte:fragment slot="lead"><Avatar src={icon} /></svelte:fragment>
 			VerbesserteKlausurNachreibenTerminFinder
 			<svelte:fragment slot="trail">
 				{#if profilePicture}
-					<Avatar src={profilePicture} width="w-16" rounded="rounded-full" />
+					<button use:popup={popupClick}>
+						<Avatar src={profilePicture} width="w-16" rounded="rounded-full"/>
+					</button>
 				{/if}
 			</svelte:fragment>
 		</AppBar>
@@ -95,10 +105,15 @@ toastStore.trigger(t);
 			<h3>Heading 3</h3>
 			<p>test</p>
 		</div>
-						</svelte:fragment>
+	</svelte:fragment>
 	<slot />
 	<svelte:fragment slot="footer">Datum</svelte:fragment>
 </AppShell>
 
 
-					
+<div class="card p-4 w-52 shadow-xl" data-popup="popupFeatured">
+	<div><p>{username}</p></div>
+	<div class="arrow bg-surface-100-800-token" />
+	<div><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ/"><p>Settings</p></a></div>
+	<div><button><p>Logout</p></button></div>
+</div>

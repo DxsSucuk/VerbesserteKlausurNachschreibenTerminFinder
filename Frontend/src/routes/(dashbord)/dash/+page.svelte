@@ -1,34 +1,37 @@
-<script lang='ts'>
-    import { Table } from '@skeletonlabs/skeleton';
-    import { tableMapperValues } from '@skeletonlabs/skeleton';
-    import type { TableSource } from '@skeletonlabs/skeleton';
+<script lang="ts">
+	import { Table } from '@skeletonlabs/skeleton';
+	import { tableMapperValues } from '@skeletonlabs/skeleton';
+	import type { TableSource } from '@skeletonlabs/skeleton';
 
+	let visible: boolean = true;
 
-    let visible: boolean = true;
+	const sourceData = [
+		{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
+		{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
+		{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
+		{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
+		{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
+	];
 
-    const sourceData = [
-        { position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
-        { position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-        { position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-        { position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-        { position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
-    ];
+	function setTableSource(): TableSource {
+		return {
+			// A list of heading labels.
+			head: ['Lernfeld', 'Datum', 'Anzahl'],
+			// The data visibly shown in your table body UI.
+			body: tableMapperValues(sourceData, ['name', 'symbol', 'weight']),
+			// Optional: The data returned when interactive is enabled and a row is clicked.
+			meta: tableMapperValues(sourceData, ['position', 'name', 'symbol', 'weight']),
+			// Optional: A list of footer labels.
+			foot: ['Total', '', '<code class="code">5</code>']
+		};
+	}
+	$: tableSimple = sourceData ? setTableSource() : undefined;
 
-    function setTableSource(): TableSource  {
-        return{
-        // A list of heading labels.
-        head: ['Lernfeld', 'Datum', 'Anzahl'],
-        // The data visibly shown in your table body UI.
-        body: tableMapperValues(sourceData, ['name', 'symbol', 'weight']),
-        // Optional: The data returned when interactive is enabled and a row is clicked.
-        meta: tableMapperValues(sourceData, ['position', 'name', 'symbol', 'weight']),
-        // Optional: A list of footer labels.
-        foot: ['Total', '', '<code class="code">5</code>']
-        };
-    }
-    $: tableSimple = sourceData ? setTableSource() : undefined;
+	function onSelected(meta: unknown): void {
+		console.log('on:selected', meta);
+	}
 </script>
 
 {#if tableSimple != undefined}
-<Table source={tableSimple} interactive={true} />
+	<Table source={tableSimple} interactive={true} on:selected={onSelected} />
 {/if}
