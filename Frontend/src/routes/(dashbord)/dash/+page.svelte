@@ -1,8 +1,7 @@
 <script lang="ts">
-	import { Table } from '@skeletonlabs/skeleton';
 	import { tableMapperValues } from '@skeletonlabs/skeleton';
 	import type { TableSource } from '@skeletonlabs/skeleton';
-
+	import Icon from '@iconify/svelte';
 	let visible: boolean = true;
 
 	const sourceData = [
@@ -48,7 +47,7 @@
 				<td class="" role="gridcell" aria-colindex="1" tabindex="0">Hydrogen</td>
 				<td class="" role="gridcell" aria-colindex="2" tabindex="-1">H</td>
 				<td class="" role="gridcell" aria-colindex="3" tabindex="-1">{obj}</td>
-				<td class="" role="gridcell" aria-colindex="4" tabindex="-1"><a href="#" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Smash</a></td>
+				<td class="flex" role="gridcell" aria-colindex="4" tabindex="-1"><a href="#smash"><Icon icon="mdi-light:home" width="35"height="35" /></a><a href="#smash"><Icon icon="mdi-light:alarm" width="35"height="35" /></a></td>
 			</tr>
 			{/each}
 		</tbody>
