@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { tableMapperValues } from '@skeletonlabs/skeleton';
-	import type { TableSource } from '@skeletonlabs/skeleton';
 	import Icon from '@iconify/svelte';
 	let visible: boolean = true;
 
@@ -12,23 +10,6 @@
 		{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
 	];
 
-	function setTableSource(): TableSource {
-		return {
-			// A list of heading labels.
-			head: ['Lernfeld', 'Datum', 'Anzahl', 'Actionen'],
-			// The data visibly shown in your table body UI.
-			body: tableMapperValues(sourceData, ['name', 'symbol', 'weight', 'code']), 
-			// Optional: The data returned when interactive is enabled and a row is clicked.
-			meta: tableMapperValues(sourceData, ['position', 'name', 'symbol', 'weight']),
-			// Optional: A list of footer labels.
-			foot: ['Total', '', '<code class="code">5</code>']
-		};
-	}
-	$: tableSimple = sourceData ? setTableSource() : undefined;
-
-	function onSelected(meta: unknown): void {
-		console.log('on:selected', meta);
-	}
 </script>
 
 <div class="table-container ">

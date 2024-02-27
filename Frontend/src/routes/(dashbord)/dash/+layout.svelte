@@ -101,9 +101,9 @@
 	<svelte:fragment slot="sidebarLeft">
 		<div use:tocCrawler={{ mode: 'generate' }}>
 			<h2>Heading 2</h2>
-			<p>test</p>
+			<p>Klassen</p>
 			<h3>Heading 3</h3>
-			<p>test</p>
+			<p>Tests</p>
 		</div>
 	</svelte:fragment>
 	<slot />
