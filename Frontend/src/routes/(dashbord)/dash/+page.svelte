@@ -1,17 +1,41 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	let visible: boolean = true;
-
-	const sourceData = [
-		{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H', code: '<a href="#" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Smash</a>' },
-		{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
-		{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
-		{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
-		{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
-	];
-
+	let istLehrer: boolean = false; 
 </script>
 
+
+{#if istLehrer}
+<div class="table-container ">
+	<table class="table table-interactive" role="grid">
+		<thead class="table-head ">
+		<tr>
+			<th class="" role="columnheader">Klasse</th>
+			<th class="" role="columnheader">Schüler</th>
+			<th class="" role="columnheader">Lernfelder</th>
+			<th class="" role="columnheader">Actionen</th>
+		</tr>
+		</thead>
+		<tbody class="table-body ">
+			{#each [2412,12315,235,124] as obj,index}
+			<tr aria-rowindex="{index}">
+				<td class="" role="gridcell" aria-colindex="1" tabindex="0">Hydrogen</td>
+				<td class="" role="gridcell" aria-colindex="2" tabindex="-1">H</td>
+				<td class="" role="gridcell" aria-colindex="3" tabindex="-1">{obj}</td>
+				<td class="flex" role="gridcell" aria-colindex="4" tabindex="-1"><a href="#smash"><Icon icon="mdi-light:file" width="35"height="35" /></a><a href="#smash"><Icon icon="mdi-light:calendar" width="35"height="35" /></a></td>
+			</tr>
+			{/each}
+		</tbody>
+		 	<tfoot class="table-foot ">
+				<tr>
+					<td class="">Total</td>
+					<td class=""></td>
+					<td class=""><code class="code">5</code></td>
+				</tr>
+			</tfoot>
+	</table>
+</div>
+{:else}
 <div class="table-container ">
 	<table class="table table-interactive" role="grid">
 		<thead class="table-head ">
@@ -28,7 +52,7 @@
 				<td class="" role="gridcell" aria-colindex="1" tabindex="0">Hydrogen</td>
 				<td class="" role="gridcell" aria-colindex="2" tabindex="-1">H</td>
 				<td class="" role="gridcell" aria-colindex="3" tabindex="-1">{obj}</td>
-				<td class="flex" role="gridcell" aria-colindex="4" tabindex="-1"><a href="#smash"><Icon icon="mdi-light:home" width="35"height="35" /></a><a href="#smash"><Icon icon="mdi-light:alarm" width="35"height="35" /></a></td>
+				<td class="flex" role="gridcell" aria-colindex="4" tabindex="-1"><a href="#smash"><Icon icon="mdi-light:file" width="35"height="35" /></a><a href="#smash"><Icon icon="mdi-light:calendar" width="35"height="35" /></a></td>
 			</tr>
 			{/each}
 		</tbody>
@@ -41,3 +65,4 @@
 			</tfoot>
 	</table>
 </div>
+{/if}
