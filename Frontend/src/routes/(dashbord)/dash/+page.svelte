@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	let visible: boolean = true;
-	let istLehrer: boolean = false; 
+	let istLehrer: boolean = true; 
 </script>
 
 
@@ -11,7 +11,7 @@
 		<thead class="table-head ">
 		<tr>
 			<th class="" role="columnheader">Klasse</th>
-			<th class="" role="columnheader">Schüler</th>
+			<th class="" role="columnheader">Schüleranzahl</th>
 			<th class="" role="columnheader">Lernfelder</th>
 			<th class="" role="columnheader">Actionen</th>
 		</tr>
@@ -22,7 +22,7 @@
 				<td class="" role="gridcell" aria-colindex="1" tabindex="0">Hydrogen</td>
 				<td class="" role="gridcell" aria-colindex="2" tabindex="-1">H</td>
 				<td class="" role="gridcell" aria-colindex="3" tabindex="-1">{obj}</td>
-				<td class="flex" role="gridcell" aria-colindex="4" tabindex="-1"><a href="#smash"><Icon icon="mdi-light:file" width="35"height="35" /></a><a href="#smash"><Icon icon="mdi-light:calendar" width="35"height="35" /></a></td>
+				<td class="flex" role="gridcell" aria-colindex="4" tabindex="-1"><a href="#smash"><a href="classroom"><Icon icon="mdi-light:calendar" width="35"height="35" /></a></td>
 			</tr>
 			{/each}
 		</tbody>
