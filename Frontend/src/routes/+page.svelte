@@ -5,13 +5,7 @@
 	let username:string, password:string;
 
 	function loginForm() {
-		var result = login(username, password);
-
-		if (result) {
-			goto('dash');
-		} else {
-			console.error('Login failed!');
-		}
+		goto('dash');
 	}
 
 </script>

@@ -1,12 +1,13 @@
 <script lang="ts">
 	import '../../+layout.svelte';
 
-	import { AppShell } from '@skeletonlabs/skeleton';
+	import { AppShell, Modal } from '@skeletonlabs/skeleton';
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import { AppBar } from '@skeletonlabs/skeleton';
 	import { localStorageStore } from '@skeletonlabs/skeleton'; // Backs up our data
 	import type { Writable } from 'svelte/store'; // Handles our data
 	import type { Settings } from '$lib/client';
+	import { Modals, closeModal } from 'svelte-modals'
 
 	import { TableOfContents, tocCrawler } from '@skeletonlabs/skeleton';
 
@@ -83,7 +84,26 @@
 	};
 </script>
 
+<Modals>
+  <div
+    slot="backdrop"
+    class="backdrop"
+    on:click={closeModal}></div>
+</Modals>
+
+<style>
+  .backdrop {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: rgba(0,0,0,0.50)
+  }
+</style>
+
 <Toast />
+<Modal />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
