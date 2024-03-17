@@ -17,8 +17,6 @@
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
-	let currentTile: number = 0;
-
 	initializeStores();
 	const toastStore = getToastStore();
 
@@ -71,7 +69,8 @@
 		if (!getSetting('username')) {
 			let setting = {
 				name: 'username',
-				value: 'ILoveBoobies'
+				value:
+					'ILoveBoobies'
 			};
 
 			saveSetting(setting);
@@ -96,13 +95,12 @@
 			<svelte:fragment slot="trail">
 				{#if profilePicture}
 					<button use:popup={popupClick}>
-						<Avatar src={profilePicture} width="w-16" rounded="rounded-full" />
+						<Avatar src={profilePicture} width="w-16" rounded="rounded-full"/>
 					</button>
 				{/if}
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
-
 	<svelte:fragment slot="sidebarLeft">
 		<AppRail>
 			<AppRailAnchor href="dash" selected={$page.url.pathname === '/dash'}>
@@ -112,21 +110,23 @@
 				<span>Übersicht</span>
 			</AppRailAnchor>
 			<AppRailAnchor href="classroom" selected={$page.url.pathname === '/classroom'}>
-				<svelte:fragment slot="lead"
-					><Icon icon="material-symbols-light:local-library"  width="35" height="35" /></svelte:fragment
-				>
+				<svelte:fragment slot="lead">
+					<Icon icon="material-symbols-light:local-library"  width="35" height="35" />
+				</svelte:fragment>
 				<span>Klassen</span>
 			</AppRailAnchor>
 			<AppRailAnchor href="pers" name="person" selected={$page.url.pathname === '/pers'}>
-				<svelte:fragment slot="lead"
-					><Icon icon="material-symbols-light:accessible-forward-sharp" width="35" height="35" /></svelte:fragment
-				>
+				<svelte:fragment slot="lead">
+					<Icon icon="mdi-light:accessible-forward-sharp" width="35" height="35" />
+					</svelte:fragment>
 				<span>Person</span>
 			</AppRailAnchor>
 		</AppRail>
 	</svelte:fragment>
 	<slot/>
+	<svelte:fragment slot="footer">Datum</svelte:fragment>
 </AppShell>
+
 
 <div class="card p-4 w-52 shadow-xl" data-popup="popupFeatured">
 	<div><p>{username}</p></div>
