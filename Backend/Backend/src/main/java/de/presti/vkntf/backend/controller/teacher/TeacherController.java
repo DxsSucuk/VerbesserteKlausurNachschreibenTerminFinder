@@ -23,7 +23,7 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @RequestMapping(value = "/classrooms")
+    @RequestMapping(value = "/classrooms", consumes = MediaType.ALL_VALUE)
     public Mono<GenericObjectResponse<List<Classroom>>> getClasses(@RequestHeader(name = "Authorization") String sessionToken) {
 
         return teacherService.getClasses(sessionToken).flatMap(x -> {

@@ -47,7 +47,7 @@ public class NoticeService {
                 });
             }
 
-            return Mono.just(new GenericObjectResponse<String>(false, null, "No session found"));
+            return Mono.just(new GenericObjectResponse<String>(false, null, "You are a teacher!"));
         }).switchIfEmpty(Mono.just(new GenericObjectResponse<String>(false, null, "No session found")));
     }
 

@@ -29,7 +29,7 @@ public class AppointmentController {
         return appointmentService.createAppointment(sessionToken, request);
     }
 
-    @RequestMapping(value = "/pending")
+    @RequestMapping(value = "/pending", consumes = MediaType.ALL_VALUE)
     public Mono<GenericObjectResponse<List<Appointment>>> getPendingAppointments(@RequestHeader(name = "Authorization") String sessionToken) {
         return appointmentService.getPendingAppointments(sessionToken).flatMap(x -> {
             if (x.isEmpty()) {
@@ -40,7 +40,7 @@ public class AppointmentController {
         }).switchIfEmpty(Mono.just(new GenericObjectResponse<List<Appointment>>(false, Collections.emptyList(), "No appointments found")));
     }
 
-    @RequestMapping(value = "/agreed")
+    @RequestMapping(value = "/agreed", consumes = MediaType.ALL_VALUE)
     public Mono<GenericObjectResponse<List<Appointment>>> getAgreedAppointments(@RequestHeader(name = "Authorization") String sessionToken) {
         return appointmentService.getAgreedAppointments(sessionToken).flatMap(x -> {
             if (x.isEmpty()) {
@@ -51,7 +51,7 @@ public class AppointmentController {
         }).switchIfEmpty(Mono.just(new GenericObjectResponse<List<Appointment>>(false, Collections.emptyList(), "No appointments found")));
     }
 
-    @RequestMapping(value = "/proposed")
+    @RequestMapping(value = "/proposed", consumes = MediaType.ALL_VALUE)
     public Mono<GenericObjectResponse<List<Appointment>>> getProposedAppointment(@RequestHeader(name = "Authorization") String sessionToken) {
         return appointmentService.getProposedAppointments(sessionToken).flatMap(x -> {
             if (x.isEmpty()) {

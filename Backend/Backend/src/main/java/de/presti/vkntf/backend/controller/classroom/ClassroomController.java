@@ -23,7 +23,7 @@ public class ClassroomController {
         this.classroomService = classroomService;
     }
 
-    @RequestMapping(value = "/students")
+    @RequestMapping(value = "/students", consumes = MediaType.ALL_VALUE)
     public Mono<GenericObjectResponse<List<Student>>> getStudents(@PathVariable("id") String classroomId, @RequestHeader(name = "Authorization") String sessionToken) {
         return classroomService.getStudents(classroomId, sessionToken).flatMap(x -> {
             if (x.isEmpty()) {

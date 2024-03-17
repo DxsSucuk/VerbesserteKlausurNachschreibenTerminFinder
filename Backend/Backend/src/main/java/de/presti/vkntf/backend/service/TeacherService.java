@@ -35,7 +35,7 @@ public class TeacherService {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
             if (session.getT1() && !session.getT2().getTeacher().isBlank()) {
                 return teacherClassroomMapRepository.getTeacherClassroomMapByTeacherId(session.getT2().getTeacher())
-                        .flatMap(teacherClassroomMap -> classroomRepository.getClassroomById(teacherClassroomMap.getClassroomId()))
+                        .flatMap(teacherClassroomMap -> classroomRepository.getClassroomByName(teacherClassroomMap.getClassroomId()))
                         .mergeWith(classroomRepository.getClassroomByClassTeacher(session.getT2().getTeacher())).collectList();
             }
 

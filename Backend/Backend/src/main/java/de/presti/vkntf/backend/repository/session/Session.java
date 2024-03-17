@@ -61,9 +61,11 @@ public class Session implements Persistable<String> {
         return isNew;
     }
 
+    @JsonIgnore
     @CreationTimestamp
     Timestamp created;
 
+    @JsonIgnore
     @UpdateTimestamp
     Timestamp updated;
 }

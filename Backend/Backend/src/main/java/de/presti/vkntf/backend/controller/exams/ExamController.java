@@ -35,7 +35,7 @@ public class ExamController {
         }).switchIfEmpty(Mono.just(new GenericResponse(false, "Missed exam not created")));
     }
 
-    @RequestMapping(value = "/missed")
+    @RequestMapping(value = "/missed", consumes = MediaType.ALL_VALUE)
     public Mono<GenericObjectResponse<List<MissedExam>>> getMissedExams(@RequestHeader(name = "Authorization") String sessionToken) {
         return examService.getMissedExams(sessionToken).flatMap(x -> {
             if (x.isEmpty()) {
