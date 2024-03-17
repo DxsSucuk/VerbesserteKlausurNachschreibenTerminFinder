@@ -1,9 +1,16 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
-	let visible: boolean = true;
+	import { goto } from '$app/navigation';
+    import { checkSession } from '$lib/client';
+	import { onMount } from 'svelte';
+
+    onMount(async () => {
+		var result = await checkSession()
+        if (!result) {
+            goto("/")
+        }
+    })
 </script>
-
-
 
 <div class="table-container ">
 	<table class="table table-interactive" role="grid">
@@ -16,7 +23,7 @@
 		</tr>
 		</thead>
 		<tbody class="table-body ">
-			{#each [2412,12315,235,124] as obj,index}
+			{#each [9, 23, 53, 64] as obj,index}
 			<tr aria-rowindex="{index}">
 				<td class="" role="gridcell" aria-colindex="1" tabindex="0">Hydrogen</td>
 				<td class="" role="gridcell" aria-colindex="2" tabindex="-1">H</td>

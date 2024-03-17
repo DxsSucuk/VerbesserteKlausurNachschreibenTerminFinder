@@ -1,9 +1,17 @@
 <script lang="ts">
 	import Icon from '@iconify/svelte';
 	let visible: boolean = true;
+	import { goto } from '$app/navigation';
+    import { checkSession } from '$lib/client';
+	import { onMount } from 'svelte';
+
+    onMount(async () => {
+		var result = await checkSession()
+        if (!result) {
+            goto("/")
+        }
+    })
 </script>
-
-
 
 <div class="table-container ">
 	<table class="table table-interactive" role="grid">

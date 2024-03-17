@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { login } from '$lib/client';
+	import { login, checkSession } from '$lib/client';
+	import { onMount } from 'svelte';
 
 	let username:string, password:string;
 
-	function loginForm() {
-		var result = login(username, password);
+	async function loginForm() {
+		var result = await login(username, password);
 
 		if (result) {
 			goto('dash');
@@ -13,7 +14,6 @@
 			console.error('Login failed!');
 		}
 	}
-
 </script>
 
 
