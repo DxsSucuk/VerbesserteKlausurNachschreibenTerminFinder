@@ -7,6 +7,7 @@
 	import { localStorageStore } from '@skeletonlabs/skeleton'; // Backs up our data
 	import type { Writable } from 'svelte/store'; // Handles our data
 	import type { Settings } from '$lib/client';
+	import { goto } from '$app/navigation';
 
 	import { TableOfContents, tocCrawler } from '@skeletonlabs/skeleton';
 
@@ -85,6 +86,18 @@
 		target: 'popupFeatured',
 		placement: 'bottom'
 	};
+
+	function directHome() {
+		goto("/dash")
+	}
+
+	function directClassroom() {
+		goto("/dash/rooms")
+	}
+
+	function directPerson() {
+		goto("/dash/pers")
+	}
 </script>
 
 <Toast />
@@ -105,19 +118,19 @@
 
 	<svelte:fragment slot="sidebarLeft">
 		<AppRail>
-			<AppRailAnchor href="dash" selected={$page.url.pathname === '/dash'}>
+			<AppRailAnchor on:click={directHome} selected={$page.url.pathname === '/dash'}>
 				<svelte:fragment slot="lead"
 					><Icon icon="mdi-light:home" width="35" height="35" /></svelte:fragment
 				>
 				<span>Übersicht</span>
 			</AppRailAnchor>
-			<AppRailAnchor href="classroom" selected={$page.url.pathname === '/classroom'}>
+			<AppRailAnchor on:click={directClassroom} selected={$page.url.pathname === '/dash/rooms'}>
 				<svelte:fragment slot="lead"
 					><Icon icon="material-symbols-light:local-library"  width="35" height="35" /></svelte:fragment
 				>
 				<span>Klassen</span>
 			</AppRailAnchor>
-			<AppRailAnchor href="pers" name="person" selected={$page.url.pathname === '/pers'}>
+			<AppRailAnchor on:click={directPerson} selected={$page.url.pathname === '/dash/pers'}>
 				<svelte:fragment slot="lead"
 					><Icon icon="material-symbols-light:accessible-forward-sharp" width="35" height="35" /></svelte:fragment
 				>
