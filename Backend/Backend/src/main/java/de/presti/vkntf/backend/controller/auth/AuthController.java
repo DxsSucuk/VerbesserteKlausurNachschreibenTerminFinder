@@ -2,6 +2,7 @@ package de.presti.vkntf.backend.controller.auth;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
 import de.presti.vkntf.backend.api.GenericResponse;
+import de.presti.vkntf.backend.api.SessionResponse;
 import de.presti.vkntf.backend.api.request.GenericValueRequest;
 import de.presti.vkntf.backend.api.request.UserLoginRequest;
 import de.presti.vkntf.backend.repository.session.Session;
@@ -25,7 +26,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login")
-    public Mono<GenericObjectResponse<Session>> login(@RequestBody UserLoginRequest userLoginRequest) {
+    public Mono<GenericObjectResponse<SessionResponse>> login(@RequestBody UserLoginRequest userLoginRequest) {
         return userManagerService.login(userLoginRequest.name(), userLoginRequest.password());
     }
 

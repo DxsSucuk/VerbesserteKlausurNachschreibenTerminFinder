@@ -87,6 +87,10 @@
 		placement: 'bottom'
 	};
 
+	function directLogin() {
+		goto("/")
+	}
+
 	function directHome() {
 		goto("/dash")
 	}

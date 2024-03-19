@@ -14,6 +14,13 @@
 			console.error('Login failed!');
 		}
 	}
+
+    onMount(async () => {
+        let result = await checkSession()
+        if (result) {
+            goto('dash')
+        }
+    })
 </script>
 
 

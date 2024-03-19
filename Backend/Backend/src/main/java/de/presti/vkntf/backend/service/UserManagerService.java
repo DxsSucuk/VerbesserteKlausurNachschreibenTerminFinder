@@ -2,6 +2,7 @@ package de.presti.vkntf.backend.service;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
 import de.presti.vkntf.backend.api.GenericResponse;
+import de.presti.vkntf.backend.api.SessionResponse;
 import de.presti.vkntf.backend.repository.session.Session;
 import de.presti.vkntf.backend.repository.session.SessionRepository;
 import de.presti.vkntf.backend.repository.student.StudentRepository;
@@ -36,7 +37,7 @@ public class UserManagerService {
         this.teacherRepository = teacherRepository;
     }
 
-    public Mono<GenericObjectResponse<Session>> login(String username, String password) {
+    public Mono<GenericObjectResponse<SessionResponse>> login(String username, String password) {
         if (username == null || password == null) {
             return Mono.just(new GenericObjectResponse<>(false, null, "Missing Parameters"));
         }
@@ -44,18 +45,18 @@ public class UserManagerService {
         return studentRepository.getStudentsById(username).flatMap(user -> {
             if (passwordEncoder.matches(password, user.getPassword())) {
                 return sessionRepository.save(new Session(RandomUtils.getRandomBase64String(128), user))
-                        .flatMap(session -> Mono.just(new GenericObjectResponse<>(true, session, "User login successful")));
+                        .flatMap(session -> Mono.just(new GenericObjectResponse<>(true, new SessionResponse(session, user), "User login successful")));
             } else {
-                return Mono.just(new GenericObjectResponse<Session>(false, null, "Incorrect password"));
+                return Mono.just(new GenericObjectResponse<SessionResponse>(false, null, "Incorrect password"));
             }
         }).switchIfEmpty(teacherRepository.getTeacherById(username).flatMap(user -> {
                     if (passwordEncoder.matches(password, user.getPassword())) {
                         return sessionRepository.save(new Session(RandomUtils.getRandomBase64String(128), user))
-                                .flatMap(session -> Mono.just(new GenericObjectResponse<>(true, session, "User login successful")));
+                                .flatMap(session -> Mono.just(new GenericObjectResponse<>(true, new SessionResponse(session, user),"User login successful")));
                     } else {
-                        return Mono.just(new GenericObjectResponse<Session>(false, null, "Incorrect password"));
+                        return Mono.just(new GenericObjectResponse<SessionResponse>(false, null, "Incorrect password"));
                     }
-                }).switchIfEmpty(Mono.just(new GenericObjectResponse<Session>(false, null, "User not found")))
+                }).switchIfEmpty(Mono.just(new GenericObjectResponse<SessionResponse>(false, null, "User not found")))
         ).onErrorReturn(new GenericObjectResponse<>(false, null, "Failed"));
     }
 
