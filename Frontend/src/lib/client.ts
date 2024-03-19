@@ -1,4 +1,4 @@
-const BASE_PATH = "http://localhost:8080/api/"
+const BASE_PATH = "https://59fc-2a01-599-11a-8b98-b500-c90c-5aa2-7b9a.ngrok-free.app/api/"
 
 export interface Settings {
     name: string
@@ -101,6 +101,7 @@ export async function login(name: string, pw: string) {
 
 export async function getClassrooms() {
     const value = await get("teacher/classrooms");
+    console.log(value)
     if (value.success) {
         return parseClassroom(value.object)
     } else {
@@ -119,9 +120,12 @@ export async function getStudentInClassroom(id: string) {
     } 
 }
 
+export function getToken() {
+    return localStorage.getItem("token") ?? "Missing Token"
+}
 
 export async function logout() {
-    const value = await post("auth/logout", '')
+    const value = await post("auth/logout", JSON.stringify({ value: getToken()}))
 
     if (value.success) {
         localStorage.removeItem("token")
@@ -134,8 +138,7 @@ export async function logout() {
 }
 
 export async function checkSession() {
-    let token = localStorage.getItem("token") ?? "Missing Token"
-    const value = await post("auth/check", JSON.stringify({ value: token }))
+    const value = await post("auth/check", JSON.stringify({ value: getToken() }))
 
     if (value.success) {
         return true
@@ -156,7 +159,7 @@ export async function post(path: string, body: string) {
             body: body,
             headers: {
                 "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("token") ?? "Missing Token"
+                "Authorization": getToken()
             },
         })
 
@@ -184,8 +187,8 @@ export async function get(path: string) {
         const res = await fetch(BASE_PATH + path, {
             method: "GET",
             headers: {
-                "Content-Type": "application/json",
-                "Authorization": localStorage.getItem("token") ?? "Missing Token"
+                "Authorization": getToken(),
+                "ngrok-skip-browser-warning": "tits"
             },
         })
 

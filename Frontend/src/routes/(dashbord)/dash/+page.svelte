@@ -14,9 +14,13 @@
         if (!result) {
             goto("/")
         } else {
-			classrooms = await getClassrooms()
+			refreshClassroom()
 		}
     })
+
+	async function refreshClassroom() {
+		classrooms = await getClassrooms()
+	}
 </script>
 
 
@@ -46,6 +50,7 @@
 					<td class="">Total</td>
 					<td class=""></td>
 					<td class=""><code class="code">{classrooms.length}</code></td>
+					<td><button on:click={refreshClassroom}><span>Refresh</span></button></td>
 				</tr>
 			</tfoot>
 	</table>

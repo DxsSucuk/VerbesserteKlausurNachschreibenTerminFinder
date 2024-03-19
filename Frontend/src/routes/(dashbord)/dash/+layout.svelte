@@ -1,13 +1,12 @@
 <script lang="ts">
 	import '../../+layout.svelte';
 
-	import { AppShell } from '@skeletonlabs/skeleton';
-	import { Avatar } from '@skeletonlabs/skeleton';
-	import { AppBar } from '@skeletonlabs/skeleton';
-	import { localStorageStore } from '@skeletonlabs/skeleton'; // Backs up our data
+	import { AppBar, Modal, Avatar, AppShell, localStorageStore} from '@skeletonlabs/skeleton';
 	import type { Writable } from 'svelte/store'; // Handles our data
-	import type { Settings } from '$lib/client';
+	import { logout, type Settings } from '$lib/client';
 	import { goto } from '$app/navigation';
+	
+	import { Modals, closeModal } from 'svelte-modals'
 
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
@@ -85,24 +84,36 @@
 		placement: 'bottom'
 	};
 
+	async function suckMaBalls() {
+		let result = await logout();
+		if (result) {
+			directLogin();
+		}
+	}
+
 	function directLogin() {
-		goto("/")
+		goto('/');
 	}
 
 	function directHome() {
-		goto("/dash")
+		goto('/dash');
 	}
 
 	function directClassroom() {
-		goto("/dash/rooms")
+		goto('/dash/rooms');
 	}
 
 	function directPerson() {
-		goto("/dash/pers")
+		goto('/dash/pers');
 	}
 </script>
 
+<Modals>
+	<div slot="backdrop" class="backdrop" on:click={closeModal}></div>
+</Modals>
+
 <Toast />
+<Modal />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
@@ -128,24 +139,43 @@
 			</AppRailAnchor>
 			<AppRailAnchor on:click={directClassroom} selected={$page.url.pathname === '/dash/rooms'}>
 				<svelte:fragment slot="lead"
-					><Icon icon="material-symbols-light:local-library"  width="35" height="35" /></svelte:fragment
+					><Icon
+						icon="material-symbols-light:local-library"
+						width="35"
+						height="35"
+					/></svelte:fragment
 				>
 				<span>Klassen</span>
 			</AppRailAnchor>
 			<AppRailAnchor on:click={directPerson} selected={$page.url.pathname === '/dash/pers'}>
 				<svelte:fragment slot="lead"
-					><Icon icon="material-symbols-light:accessible-forward-sharp" width="35" height="35" /></svelte:fragment
+					><Icon
+						icon="material-symbols-light:accessible-forward-sharp"
+						width="35"
+						height="35"
+					/></svelte:fragment
 				>
 				<span>Person</span>
 			</AppRailAnchor>
 		</AppRail>
 	</svelte:fragment>
-	<slot/>
+	<slot />
 </AppShell>
 
 <div class="card p-4 w-52 shadow-xl" data-popup="popupFeatured">
 	<div><p>{username}</p></div>
 	<div class="arrow bg-surface-100-800-token" />
-	<div><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ/"><p>Settings</p></a></div>
-	<div><button><p>Logout</p></button></div>
+	<div><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ/"><p>Motivation</p></a></div>
+	<div><button on:click={suckMaBalls}><p>Logout</p></button></div>
 </div>
+
+<style>
+	.backdrop {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		background: rgba(0, 0, 0, 0.5);
+	}
+</style>
