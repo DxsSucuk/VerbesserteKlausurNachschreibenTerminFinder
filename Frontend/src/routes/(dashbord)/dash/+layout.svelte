@@ -9,12 +9,10 @@
 	import type { Settings } from '$lib/client';
 	import { goto } from '$app/navigation';
 
-	import { TableOfContents, tocCrawler } from '@skeletonlabs/skeleton';
-
 	import { initializeStores } from '@skeletonlabs/skeleton';
 	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings, ToastStore } from '@skeletonlabs/skeleton';
-	import { AppRail, AppRailTile, AppRailAnchor } from '@skeletonlabs/skeleton';
+	import type { ToastSettings } from '@skeletonlabs/skeleton';
+	import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
