@@ -31,6 +31,33 @@
     }
 </script>
 
+    //const modalComponent: ModalComponent = {
+    //    ref: FileDropzone,
+    //    props: { foo: 'bar' },
+    //    slot: '<FileDropzone name="files" on:files={handleFileUpload}/>'
+    //};
+
+
+    //const modal: ModalSettings = {
+    //    type: 'confirm',
+    //    // Data
+    //    title: 'Please Confirm',
+    //    body: `
+    //        <div>
+    //            <p>Are you sure you wish to proceed?</p>
+    //             <!-- Include FileDropzone component here -->
+    //        </div>
+    //    `,
+    //    // TRUE if confirm pressed, FALSE if cancel pressed
+    //    response: (r: boolean) => console.log('response:', r),
+    //};
+
+    // Function to handle file upload
+    function handleFileUpload(files) {
+        // Handle file upload logic here
+        console.log('Uploaded files:', files);
+    }
+</script>
 
 {#if istLehrer}
     <div class="table-container ">
