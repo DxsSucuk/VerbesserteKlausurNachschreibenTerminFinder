@@ -144,7 +144,6 @@ export function parsenotice(values: any) {
 }
 
 export async function login(name: string, pw: string) {
-    return true;
     const value = await post("auth/login", JSON.stringify({ name: name, password: pw }))
 
     if (value.success) {
@@ -250,6 +249,15 @@ export async function approveNotice(noticeId: string) {
     const value = await post("notice/approve", JSON.stringify({ value: noticeId }))
     if(value.success) {
         return true
+    } else {
+        return false;
+    }
+}
+
+export async function createNotice(examId: string) {
+    const value = await post('notice/create', JSON.stringify({value: examId}))
+    if (value.success) {
+        return true;
     } else {
         return false;
     }

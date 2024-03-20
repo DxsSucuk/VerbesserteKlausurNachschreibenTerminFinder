@@ -41,10 +41,10 @@ public class ExamService {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
             if (session.getT1()) {
                 return missedExamRepository.getMissedExamsByStudentId(session.getT2().getStudent())
-                        .flatMap(x -> noticeService.getValidNoticeByExamAndStudent(x.getId(), session.getT2().getStudent()).map(y -> {
+                        /*.flatMap(x -> noticeService.getValidNoticeByExamAndStudent(x.getId(), session.getT2().getStudent()).map(y -> {
                     x.setHasNotice(y != null);
                     return x;
-                })).collectList();
+                }))*/.collectList();
             }
 
             return Mono.empty();

@@ -35,7 +35,7 @@ public class NoticeService {
 
     public Mono<GenericObjectResponse<String>> createNotice(String session, GenericValueRequest request) {
         return sessionService.checkSession(session).flatMap(x -> {
-            if (x.getT1() && x.getT2().getTeacher().isBlank()) {
+            if (x.getT1() && x.getT2().getTeacher() == null || x.getT2().getTeacher().isBlank()) {
                 return getNoticeByExamAndStudent(Long.parseLong(request.value()), x.getT2().getStudent()).flatMap(y -> {
                     if (y == null) {
                         return missedExamRepository.getMissedExamBy(Long.parseLong(request.value())).flatMap(z -> {
