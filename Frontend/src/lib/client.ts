@@ -236,10 +236,31 @@ export async function hasNoticeForExam(exam: bigint, student:string) {
     }
 }
 
+export function parseNotice(value: any) {
+    const instance: Notice = {
+        id: value.id,
+        approveByTeacherId: value.approvedByTeacherId,
+        createdAt: value.createdAt,
+        examId: value.examId,
+        studentId: value.studentId
+    };
+
+    return instance;
+}
+
+export async function getNoticeFromExam(exam: bigint, student:string) {
+    const value = await post("notice/exam", JSON.stringify({ examId: exam, studentId: student}))
+    if(value.success) {
+        return parseNotice(value.object);
+    } else {
+        return null;
+    }
+}
+
 export async function getNoticeImage(noticeId: string) {
     const value = await post("notice/image", JSON.stringify({ value: noticeId }))
     if(value.success) {
-        return 'blob://' + value.object;
+        return 'data:image/png;base64, ' + value.object;
     } else {
         return '';
     }

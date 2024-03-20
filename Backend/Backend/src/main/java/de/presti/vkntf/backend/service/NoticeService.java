@@ -67,6 +67,9 @@ public class NoticeService {
             if (x.getT1() && x.getT2().getTeacher() != null && !x.getT2().getTeacher().isBlank()) {
                 return getNoticeByExamAndStudent(request.examId(), request.studentId()).map(y
                         -> new GenericObjectResponse<Notice>(true, y, "Notice found"));
+            } else if (x.getT1()) {
+                return getNoticeByExamAndStudent(request.examId(), x.getT2().getStudent()).map(y ->
+                        new GenericObjectResponse<>(true, y, "Notice Found"));
             }
 
             return Mono.just(new GenericObjectResponse<Notice>(false, null, "You are not a teacher!"));

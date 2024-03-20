@@ -1,7 +1,7 @@
 <script lang="ts">
     import Icon from '@iconify/svelte';
     import { goto } from '$app/navigation';
-    import { checkSession, type Exam, getMissedExamsForClass, hasNoticeForExam } from '$lib/client';
+    import { checkSession, type Exam, getMissedExamsForClass, getNoticeFromExam } from '$lib/client';
     import { onMount } from 'svelte';
     import { page } from '$app/stores';
 
@@ -21,6 +21,13 @@
 
     async function retrieveMissedExams() {
         missedExams = await getMissedExamsForClass(classRoomId);
+    }
+
+    async function redirectToNotice(examId: string, studentId: string) {
+        let notice:Notice = await getNoticeFromExam(examId, studentId)
+        if (notice != null) {await
+            goto("/dash/notice/" + notice.id + '/view')
+        }
     }
 </script>
 
@@ -48,9 +55,9 @@
                 </td>
                 <td class="flex" role="gridcell" aria-colindex="4" tabindex="-1">
                     <!-- SEND TO NEW PAGE RELATE TO USER SPECIFIC NOTICE VIEWING -->
-                    <a href="pers">
+                    <button on:click={() => redirectToNotice(obj.id, obj.studentId)}>
                         <Icon icon="mdi-light:file" width="35" height="35" />
-                    </a>
+                    </button>
                 </td>
             </tr>
         {/each}
