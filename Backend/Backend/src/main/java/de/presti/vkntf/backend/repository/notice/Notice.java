@@ -1,10 +1,7 @@
 package de.presti.vkntf.backend.repository.notice;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.domain.Persistable;
@@ -23,7 +20,10 @@ import java.sql.Timestamp;
 public class Notice implements Persistable<Long> {
 
     @Id
+    @org.springframework.data.annotation.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long Id;
+
     long examId;
 
     @NonNull

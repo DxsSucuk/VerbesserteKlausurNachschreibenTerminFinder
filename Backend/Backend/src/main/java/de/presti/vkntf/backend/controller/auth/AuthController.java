@@ -2,17 +2,20 @@ package de.presti.vkntf.backend.controller.auth;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
 import de.presti.vkntf.backend.api.GenericResponse;
+import de.presti.vkntf.backend.api.SessionResponse;
 import de.presti.vkntf.backend.api.request.GenericValueRequest;
 import de.presti.vkntf.backend.api.request.UserLoginRequest;
 import de.presti.vkntf.backend.repository.session.Session;
 import de.presti.vkntf.backend.service.UserManagerService;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/auth", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
 public class AuthController {
 
@@ -23,7 +26,7 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/login")
-    public Mono<GenericObjectResponse<Session>> login(@RequestBody UserLoginRequest userLoginRequest) {
+    public Mono<GenericObjectResponse<SessionResponse>> login(@RequestBody UserLoginRequest userLoginRequest) {
         return userManagerService.login(userLoginRequest.name(), userLoginRequest.password());
     }
 

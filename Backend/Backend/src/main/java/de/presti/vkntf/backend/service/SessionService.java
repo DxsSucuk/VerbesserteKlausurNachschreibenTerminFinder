@@ -38,7 +38,8 @@ public class SessionService {
     }
 
     public Mono<GenericResponse> logout(String sessionToken) {
-        return sessionRepository.getSessionBySessionToken(sessionToken).flatMap(session -> sessionRepository.delete(session)
+        return sessionRepository.getSessionBySessionToken(sessionToken).flatMap(session ->
+                        sessionRepository.delete(session)
                         .then(Mono.just(new GenericResponse(true, "Logout successful"))))
                 .switchIfEmpty(Mono.just(new GenericResponse(false, "Session not found")));
     }

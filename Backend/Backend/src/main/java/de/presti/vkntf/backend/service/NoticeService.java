@@ -1,6 +1,7 @@
 package de.presti.vkntf.backend.service;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
+import de.presti.vkntf.backend.api.request.ExamAndStudentRequest;
 import de.presti.vkntf.backend.api.request.GenericValueRequest;
 import de.presti.vkntf.backend.repository.exam.MissedExam;
 import de.presti.vkntf.backend.repository.exam.MissedExamRepository;
@@ -47,7 +48,7 @@ public class NoticeService {
                 });
             }
 
-            return Mono.just(new GenericObjectResponse<String>(false, null, "No session found"));
+            return Mono.just(new GenericObjectResponse<String>(false, null, "You are a teacher!"));
         }).switchIfEmpty(Mono.just(new GenericObjectResponse<String>(false, null, "No session found")));
     }
 
@@ -55,11 +56,23 @@ public class NoticeService {
         return noticeRepository.getNoticesByExamId(examId).collectList();
     }
 
+
+    public Mono<GenericObjectResponse<Notice>> getNoticeByExamAndStudent(String session, ExamAndStudentRequest request) {
+        return sessionService.checkSession(session).flatMap(x -> {
+            if (x.getT1() && x.getT2().getTeacher() != null && !x.getT2().getTeacher().isBlank()) {
+                return getNoticeByExamAndStudent(request.examId(), request.studentId()).map(y
+                        -> new GenericObjectResponse<Notice>(true, y, "Notice found"));
+            }
+
+            return Mono.just(new GenericObjectResponse<Notice>(false, null, "You are not a teacher!"));
+        }).switchIfEmpty(Mono.just(new GenericObjectResponse<>(false, null, "No session found")));
+    }
+
     public Mono<Notice> getNoticeByExamAndStudent(long examId, String studentId) {
         return noticeRepository.getNoticeByExamIdAndStudentId(examId, studentId);
     }
 
     public Mono<Notice> getValidNoticeByExamAndStudent(long examId, String studentId) {
-        return noticeRepository.getNoticeByExamIdAndStudentIdAndApprovedByTeacherIdTrue(examId, studentId);
+        return noticeRepository.getNoticeByExamIdAndStudentIdAndApprovedByTeacherIdNotNull(examId, studentId);
     }
 }

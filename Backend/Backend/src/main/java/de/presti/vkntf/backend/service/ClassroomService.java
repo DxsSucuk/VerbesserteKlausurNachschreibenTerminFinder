@@ -32,7 +32,7 @@ public class ClassroomService {
     }
 
     public Mono<Classroom> getClassroom(String classroomId) {
-        return classroomRepository.getClassroomById(classroomId);
+        return classroomRepository.getClassroomByName(classroomId);
     }
 
     public Mono<List<Student>> getStudents(String classroomId, String sessionToken) {
@@ -48,7 +48,7 @@ public class ClassroomService {
     public Mono<Teacher> getClassTeacher(String classroomId, String sessionToken) {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
             if (session.getT1()) {
-                return classroomRepository.getClassroomById(classroomId)
+                return classroomRepository.getClassroomByName(classroomId)
                         .flatMap(y -> teacherRepository.getTeacherById(y.getClassTeacher()))
                         .switchIfEmpty(Mono.empty());
             }

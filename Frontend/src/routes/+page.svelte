@@ -1,13 +1,26 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { login } from '$lib/client';
+	import { login, checkSession } from '$lib/client';
+	import { onMount } from 'svelte';
 
 	let username:string, password:string;
 
-	function loginForm() {
-		goto('dash');
+	async function loginForm() {
+		var result = await login(username, password);
+
+		if (result) {
+			goto('dash');
+		} else {
+			console.error('Login failed!');
+		}
 	}
 
+    onMount(async () => {
+        let result = await checkSession()
+        if (result) {
+            goto('dash')
+        }
+    })
 </script>
 
 

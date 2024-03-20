@@ -37,8 +37,8 @@ public class AppointmentService {
 
     public Mono<List<Appointment>> getPendingAppointments(String sessionToken) {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
-            if (session.getT1() && !session.getT2().getTeacher().isBlank()) {
-                if (session.getT2().getTeacher().isBlank()) {
+            if (session.getT1()) {
+                if (session.getT2().getTeacher() == null || session.getT2().getTeacher().isBlank()) {
                     return appointmentRepository.getAppointmentsByStudentIdAndAcceptedByTeacherFalseAndAcceptedByStudentTrue(session.getT2().getStudent())
                             .collectList();
                 } else {
@@ -53,8 +53,8 @@ public class AppointmentService {
 
     public Mono<List<Appointment>> getProposedAppointments(String sessionToken) {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
-            if (session.getT1() && !session.getT2().getTeacher().isBlank()) {
-                if (session.getT2().getTeacher().isBlank()) {
+            if (session.getT1()) {
+                if (session.getT2().getTeacher() == null || session.getT2().getTeacher().isBlank()) {
                     return appointmentRepository.getAppointmentsByStudentIdAndAcceptedByTeacherTrueAndAcceptedByStudentFalse(session.getT2().getStudent())
                             .collectList();
                 } else {
@@ -69,8 +69,8 @@ public class AppointmentService {
 
     public Mono<List<Appointment>> getAgreedAppointments(String sessionToken) {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
-            if (session.getT1() && !session.getT2().getTeacher().isBlank()) {
-                if (session.getT2().getTeacher().isBlank()) {
+            if (session.getT1()) {
+                if (session.getT2().getTeacher() == null || session.getT2().getTeacher().isBlank()) {
                     return appointmentRepository.getAppointmentsByStudentIdAndAcceptedByTeacherTrueAndAcceptedByStudentTrue(session.getT2().getStudent()).collectList();
                 } else {
                     return appointmentRepository.getAppointmentsByTeacherIdAndAcceptedByTeacherTrueAndAcceptedByStudentTrue(session.getT2().getTeacher()).collectList();
@@ -84,21 +84,37 @@ public class AppointmentService {
     public Mono<GenericResponse> createAppointment(String sessionToken, AppointmentCreateRequest request) {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
            if (session.getT1()) {
-               if (!session.getT2().getTeacher().isBlank()) {
-                   Appointment appointment = new Appointment(session.getT2().getTeacher(), "", request.classromId(), request.date());
-                   return Flux.fromStream(request.students().stream()).flatMap(x -> {
-                       appointment.setStudentId(x);
-                       return appointmentRepository.save(appointment);
-                   }).hasElements().flatMap(x -> {
-                       if (x) {
-                           return Mono.just(new GenericResponse(true, "Appointment created"));
-                       }
+               if (session.getT2().getTeacher() != null && !session.getT2().getTeacher().isBlank()) {
+                   Appointment appointment = new Appointment(session.getT2().getTeacher(), "", request.classroomId(), request.date());
+                   appointment.setAcceptedByTeacher(true);
 
-                       return Mono.just(new GenericResponse(false, "Appointment not created"));
-                   }).switchIfEmpty(Mono.just(new GenericResponse(false, "Appointment not created")));
+                   if (request.students() != null && !request.students().isEmpty()) {
+                       return Flux.fromStream(request.students().stream()).flatMap(x -> {
+                           appointment.setStudentId(x);
+                           return appointmentRepository.save(appointment);
+                       }).hasElements().flatMap(x -> {
+                           if (x) {
+                               return Mono.just(new GenericResponse(true, "Appointment created"));
+                           }
+
+                           return Mono.just(new GenericResponse(false, "Appointment not created"));
+                       }).switchIfEmpty(Mono.just(new GenericResponse(false, "Appointment not created")));
+                   } else {
+                       return studentRepository.getStudentsByClassroomId(request.classroomId()).flatMap(x -> {
+                           appointment.setStudentId(x.getId());
+                           return appointmentRepository.save(appointment);
+                       }).hasElements().flatMap(x -> {
+                           if (x) {
+                               return Mono.just(new GenericResponse(true, "Appointment created"));
+                           }
+
+                           return Mono.just(new GenericResponse(false, "Appointment not created"));
+                       }).switchIfEmpty(Mono.just(new GenericResponse(false, "Appointment not created")));
+                   }
                } else {
-                     Appointment appointment = new Appointment("", session.getT2().getStudent(), request.classromId(), request.date());
-                     return classroomService.getClassroom(request.classromId()).flatMap(x -> {
+                     Appointment appointment = new Appointment("", session.getT2().getStudent(), request.classroomId(), request.date());
+                   appointment.setAcceptedByStudent(true);
+                     return classroomService.getClassroom(request.classroomId()).flatMap(x -> {
                          appointment.setTeacherId(x.getClassTeacher());
                          return Mono.just(appointment);
                      }).flatMap(x -> appointmentRepository.save(x)).flatMap(x -> {
