@@ -6,6 +6,7 @@ import de.presti.vkntf.backend.repository.exam.MissedExamRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 
@@ -44,6 +45,22 @@ public class ExamService {
                     x.setHasNotice(y != null);
                     return x;
                 })).collectList();
+            }
+
+            return Mono.empty();
+        }).switchIfEmpty(Mono.empty());
+    }
+
+    public Mono<List<MissedExam>> getMissedExamsByClass(String sessionToken, String classRoomId) {
+        return sessionService.checkSession(sessionToken).flatMap(session -> {
+            if (session.getT1() && session.getT2().getTeacher() != null && !session.getT2().getTeacher().isBlank()) {
+                Flux<MissedExam> missedExamFlux = missedExamRepository.getMissedExamsByClassroomId(classRoomId);
+
+                return missedExamFlux/*
+                        .flatMap(x -> noticeService.getValidNoticeByExamAndStudent(x.getId(), x.getStudentId()).map(y -> {
+                            x.setHasNotice(y != null);
+                            return x;
+                        }))*/.collectList();
             }
 
             return Mono.empty();

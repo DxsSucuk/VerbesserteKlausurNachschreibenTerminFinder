@@ -23,7 +23,7 @@ CREATE TABLE missed_exam
     id          BIGINT NOT NULL,
     student_id  VARCHAR(255) NULL,
     teacher_id  VARCHAR(255) NULL,
-    classrom_id VARCHAR(255) NULL,
+    classroom_id VARCHAR(255) NULL,
     missed_at   datetime NULL,
     CONSTRAINT pk_missedexam PRIMARY KEY (id)
 );

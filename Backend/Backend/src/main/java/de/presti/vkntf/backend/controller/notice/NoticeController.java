@@ -1,7 +1,9 @@
 package de.presti.vkntf.backend.controller.notice;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
+import de.presti.vkntf.backend.api.request.ExamAndStudentRequest;
 import de.presti.vkntf.backend.api.request.GenericValueRequest;
+import de.presti.vkntf.backend.repository.notice.Notice;
 import de.presti.vkntf.backend.service.NoticeService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -21,5 +23,10 @@ public class NoticeController {
     @RequestMapping(value = "/create")
     public Mono<GenericObjectResponse<String>> createNoticeEntry(@RequestHeader(name = "Authorization") String sessionToken, @RequestBody GenericValueRequest request) {
         return noticeService.createNotice(sessionToken, request);
+    }
+
+    @RequestMapping(value = "/exam", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public Mono<GenericObjectResponse<Notice>> getNoticeByExamAndStudent(@RequestHeader(name = "Authorization") String sessionToken, @RequestBody ExamAndStudentRequest request) {
+        return noticeService.getNoticeByExamAndStudent(sessionToken, request);
     }
 }

@@ -7,24 +7,15 @@
 	import { goto } from '$app/navigation';
 	
 	import { Modals, closeModal } from 'svelte-modals'
-
-	import { initializeStores } from '@skeletonlabs/skeleton';
-	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings } from '@skeletonlabs/skeleton';
+	import { initializeStores, Toast, getToastStore, getModalStore } from '@skeletonlabs/skeleton';
 	import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
 	import { page } from '$app/stores';
 	import Icon from '@iconify/svelte';
 
-	let currentTile: number = 0;
-
 	initializeStores();
-	const toastStore = getToastStore();
 
-	const t: ToastSettings = {
-		message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
-		autohide: false
-	};
-	toastStore.trigger(t);
+	const toastStore = getToastStore();
+    const modalStore = getModalStore();
 
 	// Floating UI for Popups
 	import { popup } from '@skeletonlabs/skeleton';
@@ -99,8 +90,8 @@
 		goto('/dash');
 	}
 
-	function directClassroom() {
-		goto('/dash/rooms');
+	function directClassroom(id: string) {
+		goto('/dash/rooms/'+ id + '/overview');
 	}
 
 	function directPerson() {

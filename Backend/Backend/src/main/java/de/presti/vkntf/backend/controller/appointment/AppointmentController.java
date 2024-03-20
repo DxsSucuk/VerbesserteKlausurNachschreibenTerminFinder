@@ -6,10 +6,7 @@ import de.presti.vkntf.backend.api.request.AppointmentCreateRequest;
 import de.presti.vkntf.backend.repository.appointment.Appointment;
 import de.presti.vkntf.backend.service.AppointmentService;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
 import java.util.Collections;
@@ -27,7 +24,7 @@ public class AppointmentController {
     }
 
     @RequestMapping(value = "/create")
-    public Mono<GenericResponse> createAppointment(@RequestHeader(name = "Authorization") String sessionToken, AppointmentCreateRequest request) {
+    public Mono<GenericResponse> createAppointment(@RequestHeader(name = "Authorization") String sessionToken, @RequestBody AppointmentCreateRequest request) {
         return appointmentService.createAppointment(sessionToken, request);
     }
 

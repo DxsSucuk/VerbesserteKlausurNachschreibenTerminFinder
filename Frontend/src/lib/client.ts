@@ -1,4 +1,4 @@
-const BASE_PATH = "https://59fc-2a01-599-11a-8b98-b500-c90c-5aa2-7b9a.ngrok-free.app/api/"
+const BASE_PATH = "http://localhost:8080/api/"
 
 export interface Settings {
     name: string
@@ -11,7 +11,7 @@ export interface Classroom {
 }
 
 export interface Exam {
-    id: BigInt,
+    id: bigint,
     studentId: string,
     teacherId: string,
     classroomId: string,
@@ -20,8 +20,8 @@ export interface Exam {
 }
 
 export interface Notice {
-    id: BigInt,
-    examId: BigInt,
+    id: bigint,
+    examId: bigint,
     studentId: string,
     approveByTeacherId: string,
     createdAt: string
@@ -64,7 +64,7 @@ export function parseClassroom(values: any) {
 
         array.push(instance);
     }
-    
+
     return array;
 }
 
@@ -82,7 +82,64 @@ export function parseStudents(values: any) {
 
         array.push(instance);
     }
-    
+
+    return array;
+}
+
+export function parseAppointments(values: any) {
+    let array = new Array<Appointment>()
+
+    for (const value of values) {
+        const instance: Appointment = {
+            id: value.id,
+            acceptedByStudent: value.acceptedByStudent,
+            acceptedByTeacher: value.acceptedByTeacher,
+            classroomId: value.classroomId,
+            date: value.date,
+            studentId: value.studentId,
+            teacherId: value.teacherId
+        };
+
+        array.push(instance);
+    }
+
+    return array;
+}
+
+export function parseExams(values: any) {
+    let array = new Array<Exam>()
+
+    for (const value of values) {
+        const instance: Exam = {
+            id: value.id,
+            classroomId: value.classroomId,
+            hasNotice: value.hasNotice,
+            missedAt: value.missedAt,
+            studentId: value.studentId,
+            teacherId: value.teacherId
+        };
+
+        array.push(instance);
+    }
+
+    return array;
+}
+
+export function parsenotice(values: any) {
+    let array = new Array<Notice>()
+
+    for (const value of values) {
+        const instance: Notice = {
+            id: value.id,
+            approveByTeacherId: value.approvedByTeacherId,
+            createdAt: value.createdAt,
+            examId: value.examId,
+            studentId: value.studentId
+        };
+
+        array.push(instance);
+    }
+
     return array;
 }
 
@@ -120,6 +177,65 @@ export async function getStudentInClassroom(id: string) {
     } 
 }
 
+export async function getProposedAppointments() {
+    const value = await get("appointment/proposed")
+    if (value.success) {
+        return parseAppointments(value.object)
+    } else {
+        console.log("Failed to retrieve appointments!")
+        return [];
+    }
+}
+
+export async function getAcceptedAppointments() {
+    const value = await get("appointment/agreed")
+    if (value.success) {
+        return parseAppointments(value.object)
+    } else {
+        console.log("Failed to retrieve appointments!")
+        return [];
+    }
+}
+
+export async function getPendingAppointments() {
+    const value = await get("appointment/pending")
+    if (value.success) {
+        return parseAppointments(value.object)
+    } else {
+        console.log("Failed to retrieve appointments!")
+        return [];
+    }
+}
+
+export async function getMissedExamsForClass(id: string) {
+    const value = await post("exam/class", JSON.stringify({ value: id}))
+    if (value.success) {
+        return parseExams(value.object)
+    } else {
+        console.log("Failed to retrieve missed exams.")
+        return [];
+    }
+}
+
+export async function getMissedExams() {
+    const value = await get("exam/missed")
+    if (value.success) {
+        return parseExams(value.object)
+    } else {
+        console.log("Failed to retrieve missed exams.")
+        return [];
+    }
+}
+
+export async function hasNoticeForExam(exam: bigint, student:string) {
+    const value = await post("notice/exam", JSON.stringify({ examId: exam, studentId: student}))
+    if(value.success) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
 export function getToken() {
     return localStorage.getItem("token") ?? "Missing Token"
 }
@@ -134,6 +250,17 @@ export async function logout() {
     } else {
         console.log("Logout failed!")
         return false;
+    }
+}
+
+export async function createNewAppointment(date: Date, classroomId: string, studentIds: string[]) {
+    const value = await post("appointment/create", JSON.stringify({ "classroomId": classroomId, "date": date, "students": studentIds}))
+
+    if (value.success) {
+        return true;
+    } else {
+        console.log("Failed to create Appointment")
+        return false
     }
 }
 

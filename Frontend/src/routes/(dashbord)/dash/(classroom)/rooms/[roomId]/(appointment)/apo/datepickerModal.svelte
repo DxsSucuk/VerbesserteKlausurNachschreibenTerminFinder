@@ -8,13 +8,13 @@
 	// Props
 	/** Exposes parent props to this component. */
 	export let parent: SvelteComponent;
-    let date: Date;
+    let store: Date;
 
 	const modalStore = getModalStore();
 
 	// We've created a custom submit function to pass the response and close the modal.
 	function onFormSubmit(): void {
-		if ($modalStore[0].response) $modalStore[0].response(date);
+		if ($modalStore[0].response) $modalStore[0].response(store);
 		modalStore.close();
 	}
 
@@ -33,7 +33,7 @@
 		<!-- Enable for debugging: -->
 		<form class="modal-form {cForm}">
 			<label class="label">
-                <Datepicker selected={date} format="DD/MM/YYYY" />
+                <Datepicker bind:selected={store} format="DD/MM/YYYY" />
 			</label>
 		</form>
 		<!-- prettier-ignore -->

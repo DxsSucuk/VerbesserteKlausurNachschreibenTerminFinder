@@ -12,6 +12,6 @@ public interface MissedExamRepository extends R2dbcRepository<MissedExam, Long> 
     Mono<MissedExam> getMissedExamBy(@Param("id") long id);
     Flux<MissedExam> getMissedExamsByStudentId(@Param("studentId") String studentId);
     Flux<MissedExam> getMissedExamsByTeacherId(@Param("teacherId") String teacherId);
-    Flux<MissedExam> getMissedExamsByClassromId(@Param("classromId") String classromId);
+    Flux<MissedExam> getMissedExamsByClassroomId(@Param("classroomId") String classroomId);
     Flux<MissedExam> getMissedExamsByTeacherIdAndStudentId(@Param("teacherId") String teacherId, @Param("studentId") String studentId);
 }
