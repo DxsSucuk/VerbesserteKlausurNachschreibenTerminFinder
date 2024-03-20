@@ -236,6 +236,24 @@ export async function hasNoticeForExam(exam: bigint, student:string) {
     }
 }
 
+export async function getNoticeImage(noticeId: string) {
+    const value = await post("notice/image", JSON.stringify({ value: noticeId }))
+    if(value.success) {
+        return 'blob://' + value.object;
+    } else {
+        return '';
+    }
+}
+
+export async function approveNotice(noticeId: string) {
+    const value = await post("notice/approve", JSON.stringify({ value: noticeId }))
+    if(value.success) {
+        return true
+    } else {
+        return false;
+    }
+}
+
 export function getToken() {
     return localStorage.getItem("token") ?? "Missing Token"
 }

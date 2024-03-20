@@ -27,7 +27,7 @@ public class SessionService {
     public Mono<Tuple2<Boolean, Session>> checkSession(String sessionToken) {
         return sessionRepository.getSessionBySessionToken(sessionToken).flatMap(session ->
         {
-            if (session.getTeacher().isBlank()) {
+            if (session.getTeacher() == null || session.getTeacher().isBlank()) {
                 return studentRepository.getStudentsById(session.getStudent())
                         .flatMap(user -> Mono.just(true).zipWith(Mono.just(session))).switchIfEmpty(Mono.just(false).zipWith(Mono.empty()));
             }

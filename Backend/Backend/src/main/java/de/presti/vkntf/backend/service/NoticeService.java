@@ -1,6 +1,7 @@
 package de.presti.vkntf.backend.service;
 
 import de.presti.vkntf.backend.api.GenericObjectResponse;
+import de.presti.vkntf.backend.api.GenericResponse;
 import de.presti.vkntf.backend.api.request.ExamAndStudentRequest;
 import de.presti.vkntf.backend.api.request.GenericValueRequest;
 import de.presti.vkntf.backend.repository.exam.MissedExam;
@@ -11,6 +12,10 @@ import de.presti.vkntf.backend.repository.student.StudentRepository;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.Base64;
 import java.util.List;
 
 @Service("noticeService")
@@ -67,6 +72,46 @@ public class NoticeService {
             return Mono.just(new GenericObjectResponse<Notice>(false, null, "You are not a teacher!"));
         }).switchIfEmpty(Mono.just(new GenericObjectResponse<>(false, null, "No session found")));
     }
+
+    public Mono<GenericObjectResponse<String>> getNoticeImage(String session, GenericValueRequest request) {
+        return sessionService.checkSession(session).flatMap(x -> {
+            if (x.getT1() && x.getT2().getTeacher() != null && !x.getT2().getTeacher().isBlank()) {
+                return noticeRepository.getNoticeById(Long.parseLong(request.value())).map(y
+                        -> {
+                    if (y == null) {
+                        return new GenericObjectResponse<String>(false, "", "Invalid Id");
+                    }
+
+                    try {
+                        return new GenericObjectResponse<String>(true, Base64.getEncoder().encodeToString(Files.readAllBytes(Path.of("notices/", y.getId()+ ".png"))), "Loaded");
+                    } catch (IOException e) {
+                        return new GenericObjectResponse<String>(false, "", "Failed to load.");
+                    }
+                });
+            }
+
+            return Mono.just(new GenericObjectResponse<String>(false, "", "Kein Lehrer"));
+        }).switchIfEmpty(Mono.just(new GenericObjectResponse<String>(false, "", "Invalid Id")));
+    }
+
+    public Mono<GenericResponse> approveNotice(String session, GenericValueRequest request) {
+        return sessionService.checkSession(session).flatMap(x -> {
+            if (x.getT1() && x.getT2().getTeacher() != null && !x.getT2().getTeacher().isBlank()) {
+                return noticeRepository.getNoticeById(Long.parseLong(request.value())).flatMap(y
+                        -> {
+                    if (y == null) {
+                        return Mono.just(new GenericResponse(false, "Invalid Id"));
+                    }
+
+                    y.setApprovedByTeacherId(x.getT2().getTeacher());
+                    return noticeRepository.save(y).flatMap(z -> Mono.just(new GenericResponse(true, "Loaded")));
+                });
+            }
+
+            return Mono.just(new GenericResponse(false, "Kein Lehrer"));
+        }).switchIfEmpty(Mono.just(new GenericResponse(false, "Invalid Id")));
+    }
+
 
     public Mono<Notice> getNoticeByExamAndStudent(long examId, String studentId) {
         return noticeRepository.getNoticeByExamIdAndStudentId(examId, studentId);

@@ -33,7 +33,8 @@ public class TeacherService {
 
     public Mono<List<Classroom>> getClasses(String sessionToken) {
         return sessionService.checkSession(sessionToken).flatMap(session -> {
-            if (session.getT1() && !session.getT2().getTeacher().isBlank()) {
+            // TODO:: find a way to not duplicate this
+            if (session.getT1() && session.getT2().getTeacher() != null && !session.getT2().getTeacher().isBlank()) {
                 return teacherClassroomMapRepository.getTeacherClassroomMapByTeacherId(session.getT2().getTeacher())
                         .flatMap(teacherClassroomMap -> classroomRepository.getClassroomByName(teacherClassroomMap.getClassroomId()))
                         .mergeWith(classroomRepository.getClassroomByClassTeacher(session.getT2().getTeacher())).collectList();
