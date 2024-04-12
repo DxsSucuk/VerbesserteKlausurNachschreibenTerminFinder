@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 @Repository
 public interface ClassroomRepository extends R2dbcRepository<Classroom, String> {
 
-    Mono<Classroom> getClassroomById(@Param("id") String id);
+    Mono<Classroom> getClassroomByName(@Param("name") String name);
     Flux<Classroom> getClassroomsByAbteilung(@Param("abteilung") int abteilung);
     Flux<Classroom> getClassroomByClassTeacher(@Param("classTeacher") String classTeacher);
 }

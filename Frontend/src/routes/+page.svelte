@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
-	import { login } from '$lib/client';
+	import { login, checkSession } from '$lib/client';
+	import { onMount } from 'svelte';
 
 	let username:string, password:string;
 
-	function loginForm() {
-		var result = login(username, password);
+	async function loginForm() {
+		var result = await login(username, password);
 
 		if (result) {
 			goto('dash');
@@ -14,6 +15,12 @@
 		}
 	}
 
+    onMount(async () => {
+        let result = await checkSession()
+        if (result) {
+            goto('dash')
+        }
+    })
 </script>
 
 
@@ -44,7 +51,7 @@
                       </div>
                       <a href="https://google.com" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">Forgot password?</a>
                   </div>
-                  <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
+                  <button class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">Sign in</button>
                   <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                       Don’t have an account yet? <a href="https://google.com" class="font-medium text-primary-600 hover:underline dark:text-primary-500">Sign up</a>
                   </p>

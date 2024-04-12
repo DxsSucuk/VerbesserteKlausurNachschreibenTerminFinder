@@ -15,7 +15,6 @@ public interface AppointmentRepository extends R2dbcRepository<Appointment, Long
     Flux<Appointment> getAppointmentsByTeacherIdAndAcceptedByTeacherTrue(@Param("teacherId") String teacherId);
     Flux<Appointment> getAppointmentsByTeacherIdAndAcceptedByTeacherTrueAndAcceptedByStudentTrue(@Param("teacherId") String teacherId);
     Flux<Appointment> getAppointmentsByTeacherIdAndAcceptedByTeacherTrueAndAcceptedByStudentFalse(@Param("teacherId") String teacherId);
-
     Flux<Appointment> getAppointmentsByTeacherIdAndAcceptedByTeacherFalseAndAcceptedByStudentTrue(@Param("teacherId") String teacherId);
 
     Flux<Appointment> getAppointmentsByStudentId(@Param("studentId") String studentId);

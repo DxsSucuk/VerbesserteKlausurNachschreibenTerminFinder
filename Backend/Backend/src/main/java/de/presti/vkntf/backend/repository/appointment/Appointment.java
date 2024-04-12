@@ -1,15 +1,14 @@
 package de.presti.vkntf.backend.repository.appointment;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
+import jakarta.annotation.Generated;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.data.domain.Persistable;
 import org.springframework.data.r2dbc.config.EnableR2dbcAuditing;
 
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Table
 @Getter
@@ -22,6 +21,8 @@ import java.sql.Timestamp;
 public class Appointment implements Persistable<Long> {
 
     @Id
+    @org.springframework.data.annotation.Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long appointmentId;
 
     boolean acceptedByTeacher;
@@ -37,7 +38,7 @@ public class Appointment implements Persistable<Long> {
     String classroomId;
 
     @NonNull
-    Timestamp date;
+    LocalDateTime date;
 
     @Override
     public Long getId() {

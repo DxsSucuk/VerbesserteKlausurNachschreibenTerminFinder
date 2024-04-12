@@ -1,29 +1,21 @@
 <script lang="ts">
 	import '../../+layout.svelte';
 
-	import { AppShell } from '@skeletonlabs/skeleton';
-	import { Avatar } from '@skeletonlabs/skeleton';
-	import { AppBar } from '@skeletonlabs/skeleton';
-	import { localStorageStore } from '@skeletonlabs/skeleton'; // Backs up our data
+	import { AppBar, Modal, Avatar, AppShell, localStorageStore} from '@skeletonlabs/skeleton';
 	import type { Writable } from 'svelte/store'; // Handles our data
-	import type { Settings } from '$lib/client';
+	import { logout, type Settings } from '$lib/client';
+	import { goto } from '$app/navigation';
+	
+	import { Modals, closeModal } from 'svelte-modals'
+	import { initializeStores, Toast, getToastStore, getModalStore } from '@skeletonlabs/skeleton';
+	import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
+	import { page } from '$app/stores';
+	import Icon from '@iconify/svelte';
 
-	import { TableOfContents, tocCrawler } from '@skeletonlabs/skeleton';
+	initializeStores();
 
-	import { initializeStores } from '@skeletonlabs/skeleton';
-	import { Toast, getToastStore } from '@skeletonlabs/skeleton';
-	import type { ToastSettings, ToastStore } from '@skeletonlabs/skeleton';
-
-initializeStores();
-const toastStore = getToastStore();
-
-const t: ToastSettings = {
-	message: 'Lorem ipsum dolor sit amet consectetur adipisicing elit...',
-	autohide:false
-};
-toastStore.trigger(t);
-
-
+	const toastStore = getToastStore();
+    const modalStore = getModalStore();
 
 	// Floating UI for Popups
 	import { popup } from '@skeletonlabs/skeleton';
@@ -52,6 +44,7 @@ toastStore.trigger(t);
 		'https://cdn.discordapp.com/attachments/1173914026066071602/1194236332067786802/full-length-portrait-busy-businessperson-running-late-wall-clock-briefcase-isolated-white-background-32275306.jpg?ex=65af9e41&is=659d2941&hm=f5a81517489a2dfa5e719e8509ec7dfc438469bc3add83d0c32b0ad80463572c&';
 
 	let profilePicture: string | undefined;
+	let username: string | undefined;
 
 	onMount(() => {
 		if (!getSetting('profile')) {
@@ -63,42 +56,117 @@ toastStore.trigger(t);
 
 			saveSetting(setting);
 		}
+
+		if (!getSetting('username')) {
+			let setting = {
+				name: 'username',
+				value: 'ILoveBoobies'
+			};
+
+			saveSetting(setting);
+		}
 		profilePicture = getSetting('profile').value;
+		username = getSetting('username').value;
 	});
 
 	const popupClick: PopupSettings = {
-	event: 'click',
-	target: 'popupClick',
-	placement: 'top'
-};
-					
+		event: 'click',
+		target: 'popupFeatured',
+		placement: 'bottom'
+	};
 
+	async function suckMaBalls() {
+		let result = await logout();
+		if (result) {
+			directLogin();
+		}
+	}
 
+	function directLogin() {
+		goto('/');
+	}
+
+	function directHome() {
+		goto('/dash');
+	}
+
+	function directClassroom(id: string) {
+		goto('/dash/rooms/'+ id + '/overview');
+	}
+
+	function directPerson() {
+		goto('/dash/pers');
+	}
 </script>
+
+<Modals>
+	<div slot="backdrop" class="backdrop" on:click={closeModal}></div>
+</Modals>
+
 <Toast />
+<Modal />
 <AppShell>
 	<svelte:fragment slot="header">
 		<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end">
-			<svelte:fragment slot="lead" ><Avatar src={icon}/></svelte:fragment>
+			<svelte:fragment slot="lead"><Avatar src={icon} /></svelte:fragment>
 			VerbesserteKlausurNachreibenTerminFinder
 			<svelte:fragment slot="trail">
 				{#if profilePicture}
-					<Avatar src={profilePicture} width="w-16" rounded="rounded-full" />
+					<button use:popup={popupClick}>
+						<Avatar src={profilePicture} width="w-16" rounded="rounded-full" />
+					</button>
 				{/if}
 			</svelte:fragment>
 		</AppBar>
 	</svelte:fragment>
+
 	<svelte:fragment slot="sidebarLeft">
-		<div use:tocCrawler={{ mode: 'generate' }}>
-			<h2>Heading 2</h2>
-			<p>test</p>
-			<h3>Heading 3</h3>
-			<p>test</p>
-		</div>
-						</svelte:fragment>
+		<AppRail>
+			<AppRailAnchor on:click={directHome} selected={$page.url.pathname === '/dash'}>
+				<svelte:fragment slot="lead"
+					><Icon icon="mdi-light:home" width="35" height="35" /></svelte:fragment
+				>
+				<span>Übersicht</span>
+			</AppRailAnchor>
+			<AppRailAnchor on:click={directClassroom} selected={$page.url.pathname === '/dash/rooms'}>
+				<svelte:fragment slot="lead"
+					><Icon
+						icon="material-symbols-light:local-library"
+						width="35"
+						height="35"
+					/></svelte:fragment
+				>
+				<span>Klassen</span>
+			</AppRailAnchor>
+			<AppRailAnchor on:click={directPerson} selected={$page.url.pathname === '/dash/pers'}>
+				<svelte:fragment slot="lead"
+					><Icon
+						icon="material-symbols-light:accessible-forward-sharp"
+						width="35"
+						height="35"
+					/></svelte:fragment
+				>
+				<span>Person</span>
+			</AppRailAnchor>
+		</AppRail>
+	</svelte:fragment>
 	<slot />
-	<svelte:fragment slot="footer">Datum</svelte:fragment>
 </AppShell>
 
+<div class="card p-4 w-52 shadow-xl" data-popup="popupFeatured">
+	<div><p>{username}</p></div>
+	<div class="arrow bg-surface-100-800-token" />
+	<div><a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ/"><p>Motivation</p></a></div>
+	<div><button on:click={suckMaBalls}><p>Logout</p></button></div>
+</div>
 
-					
+<style>
+	.backdrop {
+		position: fixed;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		background: rgba(0, 0, 0, 0.5);
+	}
+</style>

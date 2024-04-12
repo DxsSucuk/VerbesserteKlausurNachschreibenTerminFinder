@@ -39,9 +39,10 @@ public class UserBase implements Persistable<String> {
 
     @Transient
     @JsonIgnore
-    boolean isNew = true;
+    transient boolean isNew = true;
 
     @Override
+    @Transient
     public boolean isNew() {
         return isNew;
     }

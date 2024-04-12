@@ -37,6 +37,7 @@ public class Session implements Persistable<String> {
 
     @Id
     @NonNull
+    @org.springframework.data.annotation.Id
     String sessionToken;
 
     @JsonIgnore
@@ -56,14 +57,17 @@ public class Session implements Persistable<String> {
     boolean isNew = true;
 
     @Override
+    @Transient
     @JsonIgnore
     public boolean isNew() {
         return isNew;
     }
 
+    @JsonIgnore
     @CreationTimestamp
     Timestamp created;
 
+    @JsonIgnore
     @UpdateTimestamp
     Timestamp updated;
 }
